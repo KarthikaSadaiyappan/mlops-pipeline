@@ -1,0 +1,23 @@
+name: mlops-pipeline
+on:
+  push
+env:
+  AWS_REGION: "us-east-1"
+  DEV_AWS_ACCOUNT_ID: "382625484581"
+  DEV_AWS_IAM_ROLE_NAME: "Github-acition-oicd"      
+permissions:
+      id-token: write   
+      contents: read   
+jobs:
+  mlops-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::357171621133:role/github-oidc-role
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
