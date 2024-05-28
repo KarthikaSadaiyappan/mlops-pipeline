@@ -4,4 +4,4 @@ wheel
 sagemaker==2.150.0
 scikit-learn==1.2.2
 xgboost==1.7.5
-PyYAML==5.4.1
+
