@@ -34,6 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade pip setuptools wheel
+          pip install path/to/downloaded/PyYAML-5.3.1-cp37-cp37m-manylinux1_x86_64.whl
           pip install -r requirements.txt       
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
