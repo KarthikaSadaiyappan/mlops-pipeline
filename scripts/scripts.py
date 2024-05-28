@@ -208,7 +208,7 @@ model_approval_status_param = ParameterString(
 from sagemaker.workflow.pipeline_context import PipelineSession
 # Upload processing script to S3
 s3_client.upload_file(
-    Filename="scripts/preprocessing.py", Bucket=write_bucket, Key=f"{write_prefix}/scripts/preprocessing.py"
+    Filename="scripts/processing.py", Bucket=write_bucket, Key=f"{write_prefix}/scripts/preprocessing.py"
 )
 
 # Define the SKLearnProcessor configuration
