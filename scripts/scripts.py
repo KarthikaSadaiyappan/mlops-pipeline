@@ -202,3 +202,42 @@ supplied_baseline_constraints_model_explainability_param = ParameterString(
 model_approval_status_param = ParameterString(
     name="ModelApprovalStatus", default_value="Approved"
 )
+
+# Preprocessing step in pipeline
+
+from sagemaker.workflow.pipeline_context import PipelineSession
+# Upload processing script to S3
+s3_client.upload_file(
+    Filename="scripts/preprocessing.py", Bucket=write_bucket, Key=f"{write_prefix}/scripts/preprocessing.py"
+)
+
+# Define the SKLearnProcessor configuration
+sklearn_processor = SKLearnProcessor(
+    framework_version="0.23-1",
+    role=sagemaker_role,
+    instance_count=1,
+    instance_type=process_instance_type,
+    base_job_name=f"{base_job_name_prefix}-processing",
+)
+
+# Define pipeline processing step
+process_step = ProcessingStep(
+    name="DataProcessing",
+    processor=sklearn_processor,
+    inputs=[
+        ProcessingInput(source=claims_data_uri, destination="/opt/ml/processing/claims"),
+        ProcessingInput(source=customers_data_uri, destination="/opt/ml/processing/customers")
+    ],
+    outputs=[
+        ProcessingOutput(destination=f"{processing_output_uri}/train_data", output_name="train_data", source="/opt/ml/processing/train"),
+        ProcessingOutput(destination=f"{processing_output_uri}/validation_data", output_name="validation_data", source="/opt/ml/processing/val"),
+        ProcessingOutput(destination=f"{processing_output_uri}/test_data", output_name="test_data", source="/opt/ml/processing/test"),
+        ProcessingOutput(destination=f"{processing_output_uri}/processed_data", output_name="processed_data", source="/opt/ml/processing/full")
+    ],
+    job_arguments=[
+        "--train-ratio", "0.8", 
+        "--validation-ratio", "0.1",
+        "--test-ratio", "0.1"
+    ],
+    code=f"s3://{write_bucket}/{write_prefix}/scripts/preprocessing.py"
+)
