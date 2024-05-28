@@ -21,3 +21,4 @@ jobs:
           role-to-assume: arn:aws:iam::357171621133:role/github-oidc-role
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
