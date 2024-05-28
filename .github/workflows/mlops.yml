@@ -34,8 +34,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade pip setuptools wheel
-          pip install path/to/downloaded/PyYAML-5.3.1-cp37-cp37m-manylinux1_x86_64.whl
-          pip install -r requirements.txt       
+          wget https://files.pythonhosted.org/packages/19/87/8c8d9a0a91a5eb4de47a1f3ef4172d32e2c20164f77cbf2879054b5e4c67/PyYAML-5.3.1-cp38-cp38-manylinux1_x86_64.whl
+          pip install PyYAML-5.3.1-cp38-cp38-manylinux1_x86_64.whl
+          pip install -r requirements.txt --use-feature=2020-resolver    
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
