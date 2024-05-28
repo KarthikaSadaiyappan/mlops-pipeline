@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-      - uses: actions/setup-python@v5
+      - name: Install Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'  
       - name: Install dependencies
@@ -35,6 +36,6 @@ jobs:
           role-to-assume: arn:aws:iam::357171621133:role/github-oidc-role
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
-      - name: Execute SageMaker script
+      - name: Execute SageMaker variable script
         run: |
           python scripts/scripts.py
