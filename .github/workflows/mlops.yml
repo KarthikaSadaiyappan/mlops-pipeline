@@ -39,6 +39,8 @@ jobs:
           role-to-assume: arn:aws:iam::382625484581:role/Github-acition-oicd
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
-      - name: Execute SageMaker variable script
+      - name: Execute SageMaker Model script
         run: |
           python scripts/scripts.py
+     
+          
