@@ -2,10 +2,10 @@ name: mlops-pipeline
 on:
   push:
     branches:
-    - main
+    - master
   pull_request:
     branches:
-    - main
+    - master
 env:
   AWS_REGION: "us-east-1"
   DEV_AWS_ACCOUNT_ID: "382625484581"
