@@ -1,24 +1,38 @@
 name: mlops-pipeline
 on:
-  push
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
 env:
   AWS_REGION: "us-east-1"
   DEV_AWS_ACCOUNT_ID: "382625484581"
-  DEV_AWS_IAM_ROLE_NAME: "Github-acition-oicd"      
+  DEV_AWS_IAM_ROLE_NAME: "Github-acition-oicd" 
+  GH_TOKEN: ${{ github.token }}       
 permissions:
-      id-token: write   
-      contents: read   
+  id-token: write
+  contents: read
+  actions: write
+  issues: write  
 jobs:
   mlops-build:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'  
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt       
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::382625484581:role/Github-acition-oicd
+          role-to-assume: arn:aws:iam::357171621133:role/github-oidc-role
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
       - name: Execute SageMaker script
